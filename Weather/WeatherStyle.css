@@ -1,0 +1,82 @@
+﻿body {
+    background-color: dodgerblue;
+    color: oldlace;
+    text-align: center;
+    font-size: large;
+}
+.hideInfo{
+    display: none;
+}
+.showInfo{
+    display:normal;
+}
+nav ul li{
+    list-style: none;
+    display: inline;
+    text-align: center;    
+}
+button {
+    width: 100%;    
+    background-color: lightgray;
+    color: black;
+    border: 1px solid white;
+}
+input{    
+    width: 100%;
+    background-color: lightgray;
+    border: 1px solid white;
+}
+p {
+    color: oldlace;
+    font-weight: bold;
+    font-size: x-large;
+    text-shadow: 1 1 2 darkslateblue, 1 1 1 darkslateblue, 1 1 1 darkslateblue, 1 1 1 darkslateblue;    
+}
+.myFooter{    
+position: fixed;
+bottom:0;
+    background-color:deepskyblue;
+    color: oldlace;
+    border-top: 3px solid white;
+}
+small {
+text-align:center;
+color:oldlace;
+}
+.myHeader {
+    background-color: deepskyblue;
+    border-bottom: 5px solid white;
+}
+.forecastDayBox {
+    border: 2px solid white;
+}
+#todayContainer {
+    margin-top:75px;
+}
+#forecastContainer {
+    margin-bottom: 110px;
+    
+}
+#info{
+    margin-top:75px;
+    margin-bottom: 170px;
+}
+#top {
+    margin-top:200px;
+}
+#wIcon {
+    width:45%;
+}
+#astroBody {
+    background-color:midnightblue;
+}
+#apiLink {
+    color: oldlace;
+}
+#moonPhasePic {
+    width: 100%;
+    margin: auto;    
+}
+.bodyWrap {
+    width:700px;
+}

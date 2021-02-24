@@ -1,0 +1,173 @@
+﻿<!doctype html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="UTF-8">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">        
+    <link rel="stylesheet" href="WeatherStyle.css" />
+    <title>Weather Forecast</title>
+    
+</head>
+<body onload="loadPage()">
+    <div class ="header myHeader container-fluid">
+        <div class="row">            
+                <div class="col-6"><label for="zipCode"><input type="text" id="zipCode" name="ZipCode" placeholder="Enter Zip Code or City name" ></label></div>
+                <div class="col-6"><label for="weatherButton"><button id="weatherButton" name="WeatherButton" >Get Weather</button></label></div>
+            </div>        
+        <div class="row">
+            <div class="navbar">
+                <nav>
+                    <ul>
+                        <li class="nav-item"><a href="About.html">About</a></li>
+                        <li class="nav-item"><a class="active" href="Weather.html" >Weather</a></li>
+                        <li class="nav-item"><a href="Astronomy.html" id="link">Astronomy</a></li>
+                        <li class="nav-item"><a href="Contact.html">Contact</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
+    <div class="bodyWrap">
+        <div class="container-fluid" id="todayContainer" >
+            <div class="row"><p id="location" tabindex="1" class="hideInfo">Location:</p></div>
+            <div class="row"><div class="col-12" id="cityName"></div></div>
+            <div class="row">
+                <div class="container col-sm-12 col-md-6">
+                    <div class="row"><p class="hideInfo" tabindex="2">Conditions:</p></div>
+                    <div class="row"><div class="col-12"><img src="" id="wIcon"></div></div>
+                    <div class="row"><div class="col-12" id="currentConditionDesc"></div></div>
+                </div>
+                <div class="container col-sm-12 col-md-6">
+                    <div class="row"><p class="hideInfo" tabindex="3">Temperature:</p></div>
+                    <div class="row"><div class=" col-12" id="currentTemp"></div></div>
+                    <div class="row"><p class="hideInfo" tabindex="4">Feels Like:</p></div>
+                    <div class="row"><div class="col-12" id="currentTempFeel"></div></div>
+                    <div class="row"><p class="hideInfo" tabindex="5">Wind:</p></div>
+                    <div class="row"><div class="col-12" id="wind"></div></div>
+                    
+                </div>
+            </div>
+            <div class="hideInfo container-fluid" id="forecastContainer">
+                <div class="row"><p class="hideInfo col-12" id="next3Days" tabindex="6">Next 3 Days</p></div>
+                <div class="row">
+                    <div class="forecastDayBox container col-md-12 col-lg-4">
+                        <div class="row"><div class="col-12" id="dayName0" tabindex="7"></div></div>
+                        <div class="row"><div class="col-12"><img src="" id="foreCond0"></div></div>
+                        <div class="row"><div class="col-12" id="precip0"></div></div>
+                        <div class="col-12"><div class="col-12" id="dohl0"></div></div>
+                    </div>
+                    <div class="forecastDayBox container col-md-12 col-lg-4">
+                        <div class="row"><div id="dayName1" class="col-12" tabindex="8"></div></div>
+                        <div class="row"><div class="col-12"><img src="" id="foreCond1"></div></div>
+                        <div class="row">                <div class="col-12" id="precip1"></div></div>
+                        <div class="row"><div id="dohl1" class="col-12"></div></div>
+                    </div>
+                    <div class="forecastDayBox container col-md-12 col-lg-4" ">
+                        <div class="row"><div id="dayName2" class="col-12" tabindex="9"></div></div>
+                        <div class="row"><div class="col-12"><img src="" id="foreCond2"></div></div>
+                        <div class="row"><div class="col-12" id="precip2"></div></div>
+                        <div class="row"><div id="dohl2" class="col-12"></div></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="footer container-fluid myFooter" id="footer">
+            <div class="row">
+                <div class="navbar">
+                    <nav>
+                        <ul>
+                            <li class="nav-item" tabindex="10"><a href="About.html">About</a></li>
+                            <li class="nav-item" tabindex="11"><a class="active" href="Weather.html">Weather</a></li>
+                            <li class="nav-item" tabindex="12"><a href="Astronomy.html" id="link1">Astronomy</a></li>
+                            <li class="nav-item" tabindex="13"><a href="Contact.html">Contact</a></li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+            <div class="row"><small>&copy;2021</small></div>
+        </div>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
+        <script src="https://code.jquery.com/jquery-
+3.4
+.1.min.js"
+                integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+                crossorigin="anonymous"></script>
+</body>
+</html>
+<script>    
+    function loadPage() { 
+    if (document.cookie == '' || document.cookie == null) {
+        alert('Welcome to my weather forecast page. Enter a  postal code to check the weather, then click the Astronomy link to get  additional info');
+        $('#zipCode').focus();
+    } else
+    {
+        zipCode = document.cookie;
+        zipCode = zipCode.slice(8, zipCode.length);
+        $('#zipCode').val(zipCode);
+        document.getElementById('weatherButton').click();                    
+        }
+    }
+    $('#weatherButton').on('click', function () {    
+    var zipCode = $('#zipCode').val();
+    var key = '0a56523d6e454be8995200529210501';              
+    $('#link').attr("href", "Astronomy.html?ZipCode=" + zipCode);
+    $('#link1').attr("href", "Astronomy.html?ZipCode=" + zipCode);
+    $.post('https://api.weatherapi.com/v1/forecast.json?key=' + key + '&q=' + zipCode + '&days=3', function () {        
+        })
+.done(function(data) {
+    populate(data);   
+    $('#location').focus();
+})
+.fail(function() {
+alert('Please enter a valid zipp code or City, State/Region')
+})
+        
+})
+    function populate(wData) {
+        $('p').removeClass('hideInfo');
+        $('p').addClass('showInfo');
+        $('#forecastContainer').removeClass('hideInfo');
+        $('#forecastContainer').addClass('showInfo');
+        const weekdays = new Array('Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday');            
+        $('#forecastContainer').attr("style", "display: normal;")
+    $('#cityName').html(wData.location.name + ', ' + wData.location.region);    
+        $('#currentConditionDesc').html(wData.current.condition.text)                    
+        for (var i = 0; i < wData.forecast.forecastday.length; i++) {
+            var temp = new Date(wData.forecast.forecastday[i].date + ' 00:00:00'    ).getDay();            
+            console.log(temp)                                       
+            $('#dayName' + i).html(weekdays[temp])
+            if (parseInt(wData.forecast.forecastday[i].day.daily_chance_of_rain) > parseInt(wData.forecast.forecastday[i].day.daily_chance_of_snow)) {
+                $('#precip' + i).html(wData.forecast.forecastday[i].day.daily_chance_of_rain + '%')
+            } else
+                $('#precip' + i).html(wData.forecast.forecastday[i].day.daily_chance_of_snow + '%');
+            $('#foreCond' + i).attr("src", 'https:'+wData.forecast.forecastday[i].day.condition.icon)
+            console.log(wData.forecast.forecastday[i].day.condition.icon)
+            document.getElementById('foreCond' + i).alt = wData.forecast.forecastday[i].day.condition.text;
+            $('#dohl' + i).html(Math.round(wData.forecast.forecastday[i].day.maxtemp_f) + '&deg;' + '/' + Math.round(wData.forecast.forecastday[i].day.mintemp_f) + '&deg;');
+        }
+        $('#currentTemp').html(Math.round(wData.current.temp_f)+'&deg; F')
+        $('#currentTempFeel').html(Math.round(wData.current.feelslike_f) + '&deg; F')
+        $('#wind').html(Math.round(wData.current.wind_mph) + ' MPH  ' + wData.current.wind_dir)        
+        $('#wIcon').attr("alt",  wData.current.condition.text)        
+        $('#wIcon').attr("src", "https:"+wData.current.condition.icon);        
+        var dayNight = wData.current.is_day;        
+        if (dayNight == 1) {
+            $('body').css('background-color', 'dodgerblue');
+        }
+        else
+            $('body').css('background-color', 'midnightblue');
+        }
+    
+      
+    var input = document.getElementById('zipCode');
+    input.addEventListener("keypress", function (event) {
+        if (event.keyCode === 13) {
+            document.getElementById('weatherButton').click();            
+            
+            myZipCode = $('#zipCode').val();
+            document.cookie = 'zipcode='+myZipCode;
+            var myCookie = document.cookie;
+            console.log(myCookie);
+        }
+    });
+</script>

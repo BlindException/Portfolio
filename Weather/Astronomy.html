@@ -1,0 +1,272 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="utf-8" />
+    <title>Astronomy Information</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="WeatherStyle.css">
+    <script src="https://code.jquery.com/jquery-
+3.4
+.1.min.js"
+            integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+            crossorigin="anonymous"></script>
+</head>
+<body onload="check()" id="astroBody">
+    <div class="header container-fluid myHeader" id="header">
+        <div class="row">
+            <div class="col-6">        <label for="ZipCode"><input type="text" name="ZipCode" id="zipCode" placeholder="Enter Alternate Location"/></label></div>
+            <div class="col-6"><label for="ZipButton"><button id="zipButton" name="ZipButton" onclick="changeLocation()">Change Location</button></label></div>
+        </div>
+        <div class="row">
+            <div class="col-6"><label for="DateInput"><input type="date" name="DateInput" id="dateInput" /></label></div>
+            <div class="col-6"><label for="DateButton"><button id="dateButton" name="DateButton" onclick="changeDate()">Change Date</button></label></div>
+        </div>
+        <div class="row">
+            <div class="navbar">
+                <nav>
+                    <ul>
+                        <li class="nav-item"><a href="About.html">About</a></li>
+                        <li class="nav-item">    <a href="Weather.html" >Weather</a></li>
+                        <li class="nav-item"><a class="active" href="Astronomy.html" id="link1">Astronomy</a></li>
+                        <li class="nav-item"><a href="Contact.html">Contact</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
+    <div class="bodyWrap">
+        <div class="container-fluid" id="info" >
+            <div class="row">
+                <div class="col-12 col-md-6">
+                    <div class="row"><p tabindex="1" class="hideInfo" id="location">Location:</p></div>
+                    <div class="row">
+                        <div class="col-12 col-md-6" id="currentLocation"></div>
+                        <div class="col-12 col-md-6" id="currentCountry"></div>
+                    </div>
+                    <div class="row"><p tabindex="2" class="hideInfo">Latitude/Longitude:</p></div>
+                    <div class=" row">
+                        <div class="col-6" id="lat"></div>
+                        <div class="col-6" id="lon"></div>
+                    </div>
+                    <div class="row"><p tabindex="3" class="hideInfo">Current Date/Time and Time Zone:</p></div>
+                    <div class="row">
+                        <div class="col-6" id="currentTime"></div>
+                        <div class="col-6" id="timezone"></div>
+                    </div>
+                    <div class="row"><div tabindex="4" class="hideInfo" id="queryItemLabel">Date for Sun/Moon Info:</div></div>
+                    <div class="row">
+                        <div id="queryDate" class="hideInfo"></div>
+                    </div>
+                    <div class="row"><p tabindex="5" class="hideInfo">Sunrise/Sunset:</p></div>
+                    <div class="row">
+                        <div class="col-6" id="sunrise"></div>
+                        <div class="col-6" id="sunset"></div>
+                    </div>
+                    <div class="row"><p tabindex="6" class="hideInfo">Moonrise/Moonset:</p>    </div>
+                    <div class="row">
+                        <div class="col-6" id="moonrise"></div>
+                        <div class="col-6" id="moonset"></div>
+                    </div>
+                </div>
+                <div class="col-sm-12 col-md-6">
+                    <div class="row"><p tabindex="7" class="hideInfo">Moon Phase:</p></div>
+                    <div class="row"><div class="col-12" id="moonPhase"></div></div>
+                    <div class="row">                        <div class="col-12"><img src="" id="moonPhasePic" /></div>                                           </div>
+                </div>
+            </div>
+        </div>
+        <div class="footer container-fluid myFooter" id="footer">
+            <div class="row">
+                <div class="navbar">
+                    <nav>
+                        <ul>
+                            <li class="nav-item"><a tabindex="8" href="About.html">About</a></li>
+                            <li class="nav-item">    <a tabindex="9" href="Weather.html">Weather</a></li>
+                            <li class="nav-item"><a tabindex="10" class="active" href="Astronomy.html" id="link1">Astronomy</a></li>
+                            <li class="nav-item"><a tabindex="11" href="Contact.html">Contact</a></li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+            <div class="row"><small class=col-12 "copy">&copy;2021</small></div>
+        </div>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
+</body>
+</html>
+<script>   
+    function check() {
+        if (document.cookie == '' || document.cookie == null){
+            var myURL = window.location.search
+            var urlParams = new URLSearchParams(myURL);
+            var urlZipCode = urlParams.get('ZipCode');
+            if (urlZipCode != null) {
+                loadPage(urlZipCode);
+                $('#location').focus();
+            } else {
+                alert('Enter a valid postal code or City to see some Sun/Moon info. Then you can specify any date to get the info for that date.');
+                $('#zipCode').focus();
+            }
+        } else
+        {
+            urlZipCode = document.cookie;
+                urlZipCode = urlZipCode.slice(8, urlZipCode.length);
+            loadPage(urlZipCode);
+            $('#location').focus();
+        }
+    }
+    function loadPage(urlZipCode) {        
+        $('p').removeClass('hideInfo');
+        $('p').addClass('showInfo');        
+
+        var today = new Date();
+        var thisYear = today.getFullYear();
+        var thisMonth = today.getMonth();
+        thisMonth += 1;
+        if (thisMonth < 10) {
+            thisMonth = '0' + thisMonth;
+        }
+        var thisDay = today.getDate();
+        if (thisDay < 10) {
+            thisDay = '0' + thisDay;
+        }
+        let formattedDate = thisYear + "-" + thisMonth + "-" + thisDay;
+        callApi(urlZipCode, formattedDate);        
+    }
+    function callApi(urlZipCode, formattedDate) {
+        const key = '0a56523d6e454be8995200529210501';
+        myZipCode = urlZipCode;
+        document.cookie = 'zipcode=' + myZipCode;
+        var myCookie = document.cookie;
+        console.log(myCookie);
+        $.post('https://api.weatherapi.com/v1/astronomy.json?key=' + key + '&q=' + urlZipCode + '&dt=' + formattedDate, function () {
+        })
+            .done(function (data) {
+                populate(data);                
+            })
+            .fail(function () {
+                alert("Something went wrong, please try again.");
+            })
+    };
+        function populate(myData) {
+            $('#currentLocation').html(myData.location.name + ', ' + myData.location.region);
+            $('#currentCountry').html(myData.location.country);            
+            var today = new Date(myData.location.localtime).toDateString();
+            var nowTime = new Date(myData.location.localtime).toLocaleTimeString();
+            if (nowTime.length == 10) {
+                nowTime = nowTime.slice(0, 4) + ' ' + nowTime.slice(8, nowTime.length);
+            } else {
+                nowTime = nowTime.slice(0, 5) + ' ' + nowTime.slice(9, 11);
+            }
+            $('#currentTime').html(today + ' ' + nowTime);
+            $('#timezone').html(myData.location.tz_id);
+            $('#lat').html(myData.location.lat);            
+            $('#lon').html(myData.location.lon);
+
+            $('#sunrise').html(myData.astronomy.astro.sunrise);
+            $('#sunset').html(myData.astronomy.astro.sunset);
+            $('#moonrise').html(myData.astronomy.astro.moonrise);
+            $('#moonset').html(myData.astronomy.astro.moonset);
+            $('#moonPhase').html(myData.astronomy.astro.moon_phase)
+            var moonPhase = myData.astronomy.astro.moon_phase;            
+            switch (moonPhase) {
+                case 'New Moon':
+                    $('#moonPhasePic').attr('src', 'Images/NewMoon.jpg');
+                    $('#moonPhasePic').attr('alt', 'Photograph of ' + moonPhase + ' .');
+                    break;
+                case 'Full Moon':
+                    $('#moonPhasePic').attr('src', 'Images/FullMoon.jpg');
+                    $('#moonPhasePic').attr('alt', 'Photograph of ' + moonPhase + ' .');
+                    break;
+                case 'First Quarter':
+                    $('#moonPhasePic').attr('src', 'Images/FirstQuarter.jpg');
+                    $('#moonPhasePic').attr('alt', 'Photograph of ' + moonPhase + ' Moon.');
+                    break;
+                case 'Last Quarter':
+                    $('#moonPhasePic').attr('src', 'Images/ThirdQuarter.jpg');
+                    $('#moonPhasePic').attr('alt', 'Photograph of ' + moonPhase +' Moon.');
+                    break;
+                case 'Waxing Crescent': 
+                    $('#moonPhasePic').attr('src', 'Images/WaxingCrescent.jpg');
+                    $('#moonPhasePic').attr('alt', 'Photograph of ' + moonPhase + ' Moon.');
+                    break;
+                case 'Waning Crescent':
+                    $('#moonPhasePic').attr('src', 'Images/WaningCrescent.jpg');
+                    $('#moonPhasePic').attr('alt', 'Photograph of ' + moonPhase + ' Moon.');
+                                        break;
+                case 'Waxing Gibbous':
+                    $('#moonPhasePic').attr('src', 'Images/WaxingGibbous.jpg');
+                    $('#moonPhasePic').attr('alt', 'Photograph of ' + moonPhase + ' Moon.');
+                                        break;
+                case 'Waning Gibbous':
+                    $('#moonPhasePic').attr('src', 'Images/WaningGibbous.jpg');
+                    $('#moonPhasePic').attr('alt', 'Photograph of ' + moonPhase + ' Moon.');
+                    break;                
+                case Default:
+                    $('#moonPhasePic').attr('src', 'Images/DefaultMoon.jpg');
+                    $('#moonPhasePic').attr('alt', 'The photograph for ' + moonPhase + ' cannot be accessed or is missing, so instead a photograph of All phases of the Moon is displayed.');
+                    break;
+            }
+            console.log(typeof (myData.astronomy.astro.sunrise));
+            console.log(myData.astronomy.astro.sunrise);           
+    };
+    function changeLocation() {
+        urlZipCode = $('#zipCode').val();
+        var today = new Date();
+        var thisYear = today.getFullYear();
+        var thisMonth = today.getMonth();
+        thisMonth += 1;
+        if (thisMonth < 10) {
+            thisMonth = '0' + thisMonth;
+        }
+        var thisDay = today.getDate();
+        if (thisDay < 10) {
+            thisDay = '0' + thisDay;
+        }
+        let formattedDate = thisYear + "-" + thisMonth + "-" + thisDay;
+        callApi(urlZipCode, formattedDate);
+
+
+        
+        $('#location').focus();
+        }    
+    function changeDate() {                
+        var urlZipCode = '';
+        newZipCode = $('#zipCode').val();
+        if (newZipCode == '') {
+            var myURL = window.location.search
+            var urlParams = new URLSearchParams(myURL);
+            urlZipCode = urlParams.get('ZipCode');
+                    } else {
+            urlZipCode = newZipCode;
+        }
+        formattedDate= $('#dateInput').val();
+               
+            callApi(urlZipCode, formattedDate);
+        $('#queryItemLabel').removeClass('hideInfo');
+        $('#QueryItemLabel').addClass('showInfo');
+        
+        $('#queryDate').removeClass('hideInfo');
+        $('#queryDate').addClass('showInfo');                
+        newFormattedDate = $('#dateInput').val() + ' 00:00:00';
+        newFormattedDate1 = new Date(newFormattedDate).toDateString();
+        $('#queryDate').html(newFormattedDate1);
+        $('#location').focus();
+        }    
+    var dateInput = document.getElementById('dateInput');
+    dateInput.addEventListener("keypress", function (event) {
+        if (event.keyCode === 13) {
+            document.getElementById('dateButton').click();
+            document.getElementById('location').focus();
+        }
+    })
+    var locationInput = document.getElementById('zipCode');
+    locationInput.addEventListener("keypress", function (event) {
+        if (event.keyCode === 13) {
+            document.getElementById('zipButton').click();
+            $('#location').focus();
+        }
+    })
+            ;
+    </script>
